@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, use } from "react";
 import { useSearchParams } from "next/navigation";
 import { getTvShowDetails, getMovieDetails } from "@/tmdbApi";
 import {
@@ -12,6 +12,7 @@ import {
 import { useDarkMode } from "@/context/DarkModeContext";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
+
 interface MovieDetails {
   id: string;
   title?: string;
@@ -21,16 +22,10 @@ interface MovieDetails {
   poster_path?: string;
 }
 
-export const MovieDetails = ({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) => {
+export default function MovieDetails({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params); // ✅ unwrap the promise using React.use()
   const { darkmode, setDarkMode } = useDarkMode();
-
-  const [resolvedParams, setResolvedParams] = useState<{ id: string } | null>(null);
   const searchParams = useSearchParams();
-  const movieId = resolvedParams?.id || null;
   const type = searchParams.get("type");
 
   const [details, setDetails] = useState<MovieDetails | null>(null);
@@ -38,24 +33,15 @@ export const MovieDetails = ({
   const [selectedPlaylist, setSelectedPlaylist] = useState("");
   const [newPlaylistName, setNewPlaylistName] = useState("");
 
-  // Resolve route params
-  useEffect(() => {
-    const resolveParams = async () => {
-      const resolved = await params;
-      setResolvedParams(resolved);
-    };
-    resolveParams();
-  }, [params]);
-
   // Fetch movie or TV details
   useEffect(() => {
-    if (movieId && type) {
+    if (id && type) {
       const fetchDetails = async () => {
         try {
           const fetchedDetails =
             type === "movie"
-              ? await getMovieDetails(movieId)
-              : await getTvShowDetails(movieId);
+              ? await getMovieDetails(id)
+              : await getTvShowDetails(id);
           setDetails(fetchedDetails);
         } catch (error) {
           console.error("Error fetching details:", error);
@@ -63,7 +49,7 @@ export const MovieDetails = ({
       };
       fetchDetails();
     }
-  }, [movieId, type]);
+  }, [id, type]);
 
   // Load user playlists
   useEffect(() => {
@@ -74,7 +60,7 @@ export const MovieDetails = ({
     if (!selectedPlaylist || !details) return;
 
     const movie: MovieDetails = {
-      id: movieId!,
+      id: id!,
       type: type || undefined,
       title: details.title,
       name: details.name,
@@ -118,7 +104,7 @@ export const MovieDetails = ({
       <div className="mt-6 space-y-3 max-w-sm mx-auto">
         <button
           onClick={() =>
-            saveToWatchLater(movieId!, type!, details.title || details.name || "")
+            saveToWatchLater(id!, type!, details.title || details.name || "")
           }
           className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg shadow-md transition-transform transform hover:scale-105"
         >
@@ -167,9 +153,8 @@ export const MovieDetails = ({
       </div>
     </div>
   );
-};
+}
 
-export default MovieDetails;
 
 
 // Note: This code is a React component that fetches and displays movie or TV show details based on the provided ID and type.
