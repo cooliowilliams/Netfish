@@ -5,6 +5,7 @@ import { getTrending, getMovieTrailer } from "../../tmdbApi";
 import SearchBar from "@/components/SearchBar";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import Image from "next/image";
 
 
 export default function MoviesPage() {
@@ -128,11 +129,13 @@ export default function MoviesPage() {
                         key={item.id} 
                         className="relative group bg-gray-800 p-4 rounded-lg shadow-lg text-center transition-transform duration-300 hover:scale-105" 
                     >
-                        <img 
+                        <Image 
                             src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
-                            alt={item.title || item.name} 
+                            alt={item.title || item.name || "No title available"} 
                             className="w-full h-60 object-cover rounded-lg mb-4 cursor-pointer"
                             onClick={() => handleMovieClick(item.id, showMovies ? "movie" : "tv")}
+                            width={300}
+                            height={300}
                         />
                         <h2 className="text-lg font-bold text-white">
                             {item.title || item.name}

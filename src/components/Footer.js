@@ -1,6 +1,6 @@
 "use client";
 
-import react from "react";
+
 
 const Footer = () => {
     return (

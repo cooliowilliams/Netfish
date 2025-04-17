@@ -3,7 +3,7 @@
 import { DarkModeProvider, useDarkMode } from "../context/DarkModeContext"; // Make sure to import the provider and hook
 import NavBar from "../components/Navbar.js";
 import SearchBar from "../components/SearchBar.js";
-import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
 

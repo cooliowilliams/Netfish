@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getPlaylists, savePlaylists } from "@/userStorage";
+import Image from "next/image";
 
 interface User {
   name: string;
@@ -66,10 +67,12 @@ const ProfilePage = () => {
       <div className="bg-gray-800 p-4 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-semibold mb-4 flex items-center">
           {user?.name ?? "User"}&apos;s Profile
-          <img
+          <Image
             src={user?.profilePicture ?? "/default-profile.png"}
             alt="Profile"
             className="w-10 h-10 rounded-full ml-3"
+            width={60}
+            height={100}
           />
         </h2>
         <p className="text-lg">
@@ -111,11 +114,13 @@ const ProfilePage = () => {
                       movies.map(movie => (
                         <div key={movie.id} className="bg-gray-700 p-3 rounded-lg text-center relative">
                           {movie.poster_path ? (
-                            <img
+                            <Image
                               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                               alt={movie.title ?? movie.name ?? "Movie Poster"}
                               className="w-32 h-48 object-cover rounded-lg mb-2 mx-auto"
                               onError={() => console.log("Image failed to load:", `https://image.tmdb.org/t/p/w500${movie.poster_path}`)}
+                              width={120}
+                              height={180}
                             />
                           ) : (
                             <div className="w-32 h-48 bg-gray-600 flex items-center justify-center text-gray-300 text-sm rounded-lg mb-2 mx-auto">

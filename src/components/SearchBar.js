@@ -1,6 +1,6 @@
 "use client"; // Required for client-side hooks
 
-import { use, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { searchMovies } from "@/tmdbApi";
 

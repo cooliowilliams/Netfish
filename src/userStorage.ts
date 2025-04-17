@@ -10,7 +10,7 @@ interface Movie {
   
   // Save to Watch Later
   export function saveToWatchLater(id: string, type: string, title: string) {
-    const watchLater: any[] = JSON.parse(localStorage.getItem("watchLater") || "[]");
+    const watchLater: Movie[] = JSON.parse(localStorage.getItem("watchLater") || "[]");
     if (!watchLater.some(item => item.id === id)) {
       watchLater.push({ id, type, title });
       localStorage.setItem("watchLater", JSON.stringify(watchLater));
@@ -18,7 +18,7 @@ interface Movie {
   }
   
   // Get user's Watch Later list
-  export function getWatchLater(): any[] {
+  export function getWatchLater(): Movie[] {
     return JSON.parse(localStorage.getItem("watchLater") || "[]");
   }
   

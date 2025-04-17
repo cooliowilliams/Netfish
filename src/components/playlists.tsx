@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { createPlaylist, getPlaylist, getPlaylists } from "@/userStorage";
 
-// Define a Movie interface for better type safety (replace 'any[]')
+import Image from "next/image";
+
+
 interface Movie {
   id: string; // Update to match the type returned by getPlaylist
   title?: string;
@@ -79,11 +81,11 @@ export default function PlaylistPage() {
                 <li key={movie.id} className="p-2 border-b flex items-center space-x-4">
                   {/* Poster Image */}
                   {movie.poster_path ? (
-                    <img
+                    <Image
                       src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} // Smaller size for list view
                       alt={movie.title || movie.name || movie.poster_path}
                       className="w-20 h-30 object-cover rounded-lg"
-                      onError={(e) => console.log("Failed to load image:", movie.poster_path)} // Debug image errors
+                      onError={() => console.log("Failed to load image:", movie.poster_path)} // Debug image errors
                     />
                   ) : (
                     <div className="w-20 h-30 bg-gray-700 flex items-center justify-center text-gray-400 rounded-lg">
